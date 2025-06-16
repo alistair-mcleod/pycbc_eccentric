@@ -1082,6 +1082,7 @@ _filter_preconditions["SPAtmplt"] = spa_tmplt_precondition
 
 _filter_ends["SPAtmplt"] = spa_tmplt_end
 _filter_ends["TaylorF2"] = spa_tmplt_end
+_filter_ends["TaylorF2Ecc"] = spa_tmplt_end
 #_filter_ends["SEOBNRv1_ROM_EffectiveSpin"] = seobnrv2_final_frequency
 #_filter_ends["SEOBNRv1_ROM_DoubleSpin"] =  seobnrv2_final_frequency
 #_filter_ends["SEOBNRv2_ROM_EffectiveSpin"] = seobnrv2_final_frequency
@@ -1094,6 +1095,7 @@ _filter_ends["TaylorF2"] = spa_tmplt_end
 _template_amplitude_norms["SPAtmplt"] = spa_amplitude_factor
 _filter_time_lengths["SPAtmplt"] = spa_length_in_time
 _filter_time_lengths["TaylorF2"] = spa_length_in_time
+_filter_time_lengths["TaylorF2Ecc"] = spa_length_in_time
 _filter_time_lengths["SpinTaylorT5"] = spa_length_in_time
 _filter_time_lengths["SEOBNRv1_ROM_EffectiveSpin"] = seobnrv2_length_in_time
 _filter_time_lengths["SEOBNRv1_ROM_DoubleSpin"] = seobnrv2_length_in_time

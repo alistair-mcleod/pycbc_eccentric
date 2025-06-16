@@ -10,7 +10,7 @@ ADD docker/etc/cvmfs/config-osg.opensciencegrid.org.conf /etc/cvmfs/config-osg.o
 RUN dnf -y install https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm && dnf -y install cvmfs cvmfs-config-default && dnf clean all && dnf makecache && \
     dnf -y groupinstall "Development Tools" \
                         "Scientific Support" && \
-    rpm -e --nodeps git perl-Git && dnf -y install @python39 rsync zlib-devel libpng-devel libjpeg-devel sqlite-devel openssl-devel fftw-libs-single fftw-devel fftw fftw-libs-long fftw-libs fftw-libs-double gsl gsl-devel hdf5 hdf5-devel python39-devel swig which osg-ca-certs && python3.9 -m pip install --upgrade pip setuptools wheel cython && python3.9 -m pip install mkl ipython jupyter jupyterhub jupyterlab lalsuite==7.24 && \
+    rpm -e --nodeps git perl-Git && dnf -y install @python39 rsync zlib-devel libpng-devel libjpeg-devel sqlite-devel openssl-devel fftw-libs-single fftw-devel fftw fftw-libs-long fftw-libs fftw-libs-double gsl gsl-devel hdf5 hdf5-devel python39-devel swig which osg-ca-certs && python3.9 -m pip install --upgrade pip setuptools wheel cython && python3.9 -m pip install mkl ipython jupyter jupyterhub jupyterlab lalsuite && \
     dnf -y install https://repo.opensciencegrid.org/osg/3.5/el8/testing/x86_64/osg-wn-client-3.5-5.osg35.el8.noarch.rpm && dnf -y install pelican-osdf-compat-7.10.11-1.x86_64 && dnf -y install pelican-7.10.11-1.x86_64 && dnf clean all
 
 # set up environment
@@ -38,6 +38,24 @@ ENV PATH "/usr/local/bin:/usr/bin:/bin:/lib64/openmpi/bin/bin"
 # Users wanting it to point elsewhere should start docker using:
 #   docker <cmd> -e LAL_DATA_PATH="/my/new/path"
 ENV LAL_DATA_PATH "/cvmfs/software.igwn.org/pycbc/lalsuite-extra/current/share/lalsimulation:/opt/pycbc/pycbc-software/share/lal-data"
+
+# When the container is started with
+#   docker run -it pycbc/pycbc-el8:latest
+# the default is to start a loging shell as the pycbc user.
+# This can be overridden to log in as root with
+#   docker run -it pycbc/pycbc-el8:latest /bin/bash -l
+CMD ["/bin/su", "-l", "pycbc"]
+
+ADD requirements.txt /etc/requirements.txt
+
+ADD requirements-igwn.txt /etc/requirements-igwn.txt
+
+ADD companion.txt /etc/companion.txt
+
+# Replace the github repo accordingly
+RUN /bin/sh -c pip install -r /etc/requirements.txt && pip install -r /etc/requirements-igwn.txt && pip install -r /etc/companion.txt && pip install git+https://github.com/alistair-mcleod/pycbc_eccentric.git
+
+ADD ./docker/etc/docker-install.sh /etc/docker-install.sh
 
 # When the container is started with
 #   docker run -it pycbc/pycbc-el8:latest
